@@ -1,0 +1,8 @@
+# Ignore swp files
+*.swp
+
+# Ignore java class files
+*.class
+
+# Ignore txt files
+*.txt
