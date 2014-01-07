@@ -3,8 +3,9 @@ import java.io.*;
 
 /*
  *
- * Author: Sim Aik Chun
- *
+ * @author: Sim Aik Chun
+ * 
+ * The Aim of this program is to cipher plain text from a file and using Transposition cipher and output to anothe text file.
  *
  */
 
@@ -29,33 +30,48 @@ public class Transposition {
 
 		System.out.println("Key is OK.");
 
-		String inputFilename = args[args.length-2]; 
-		String outputFilename = args[args.length-1];
 
-		if (args[0].equals("-e")) {
+		try {
+			if (!args[0].equals("-e") && !args[0].equals("-d")) {
+				throw new TranspositionException("flag not recognized. choose -e for encryption or -d for decryption.");
+			}
 
-			String input = readFile(inputFilename);
+
+			String inputFilename = args[args.length-2]; 
+			String outputFilename = args[args.length-1];
+
+			String input = "";
+			String output = "";
+
+			if (args[0].equals("-e")) {
+
+				input = readFile(inputFilename);
+				
+				// invoke encryption
+				output = encryption(input, key);
+
+			} 
+
+			if (args[0].equals("-d")) {
+				input = readFile(inputFilename);
+
+				// invoke decryption
+				output = decryption(input, key);
+
+			}
+
+			// write the output into outputFilename
+
+			boolean successfulWriteToOutputFile = writeToOutputFile(output, outputFilename);
+
+			if (!successfulWriteToOutputFile) {
+				throw new TranspositionException("Output File Error.");
+			}
 			
-			// invoke encryption
-			String output = encryption(input, key);
+			System.out.println("Text has been encrypted and written on to " + outputFilename);
 
-			// write in into an output file
-			if (writeToOutputFile(output, outputFilename)) {
-				System.out.println("Text has been encrypted and written on to " + outputFilename);
-			}
-
-		} 
-
-		if (args[0].equals("-d")) {
-			String input = readFile(inputFilename);
-
-			// invoke decryption
-			String output = decryption(input, key);
-			System.out.println("Decrypted text: ");
-
-			if (writeToOutputFile(output, outputFilename)) {
-				System.out.println("Text has been encrypted and written on to " + outputFilename);
-			}
+		} catch (TranspositionException te) {
+			System.err.println("TranspositionException: " + te.getMessage());
 		}
 
 	}
