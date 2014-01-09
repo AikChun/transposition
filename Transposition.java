@@ -151,7 +151,7 @@ public class Transposition {
  * @return String concatenation of all text in the file
  */
 	public static String readFile(String inputFilename) {
-		String fileLine = "null";
+		String fileLine = "";
 		String everything = "";
 
 		try {
